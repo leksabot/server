@@ -10,7 +10,14 @@ const UserSchema = new Schema({
 	},
 	email: {
 		type: String,
-		unique: [true, 'Email should be unique']
+		unique: [true, 'Email should be unique'],
+		validate : {
+			validator: function (v) {
+				let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				return regex.test(v)
+			},
+			message: 'Please Check your email'
+		}
 	},
 	password: {
 		type: String,

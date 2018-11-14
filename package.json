@@ -27,7 +27,6 @@
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.22.2",
     "mongoose": "^5.3.12",
-    "react-native-country-picker-modal": "^0.6.2",
     "socket.io": "^2.1.1",
     "uuid": "^3.3.2"
   },

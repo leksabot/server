@@ -6,7 +6,6 @@ const hashPassword = require('../helpers/hashPassword')
 
 module.exports = {
     register: function (req,res) {
-        
         User.create({
             name: req.body.name,
             email: req.body.email,

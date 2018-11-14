@@ -5,8 +5,13 @@ const express = require('express');
 const bodyParser =  require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose')
-// mongoose.connect('mongodb://localhost:27017/leksabotdb', {useNewUrlParser: true})
-mongoose.connect(process.env.MONGO_USER,{useNewUrlParser: true})
+
+if(process.env.NODE_ENV !== 'test'){
+    // mongoose.connect('mongodb://localhost:27017/leksabotdb', {useNewUrlParser: true})
+    mongoose.connect(process.env.MONGO_USER,{useNewUrlParser: true})
+} else {
+    mongoose.connect('mongodb://localhost:27017/leksabotdbtesting', {useNewUrlParser: true})
+}
 
 const IndexRoutes = require('./routes/index')
 const QuestionRoutes = require('./routes/question')
@@ -21,7 +26,7 @@ app.get('/', (req,res)=> {
     res.send('OK')
 })
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening to port `,process.env.PORT)
 })
 

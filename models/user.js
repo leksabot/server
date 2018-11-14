@@ -26,6 +26,8 @@ const UserSchema = new Schema({
 	language: {
 		type: String
 	}
+},{
+	timestamps: true
 })
 	
 UserSchema.post('validate', (doc) => {

@@ -41,5 +41,20 @@ module.exports = {
                     err: error
                 })
             })
+    },
+    remove: function (req,res) {
+        Question.findOneAndDelete({_id: req.params.id})
+            .then(question => {
+                res.status(201).json({
+                    msg: 'Question deleted',
+                    data: question 
+                })
+            })
+            .catch(error => {
+                res.status(500).json({
+                    msg: 'ERROR Delete Question',
+                    err: error
+                })
+            })
     }
 }

@@ -2,9 +2,11 @@
 
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const hashPassword = require('../helpers/hashPassword')
 
 module.exports = {
     register: function (req,res) {
+        
         User.create({
             name: req.body.name,
             email: req.body.email,
@@ -35,14 +37,15 @@ module.exports = {
          .catch(error => {
              res.status(500).json({
                  msg: 'ERROR Registration',
-                 er: error
+                 err: error
              })
          })
     },
     login: function(req,res) {
+        let hash = hashPassword(req.body.password)
         User.findOne({
             email: req.body.email,
-            password: req.body.password
+            password: hash
         })
           .then(user => {
             let nativeLang = user.language
@@ -59,7 +62,7 @@ module.exports = {
                     })
                 } else {
                     res.status(500).json({
-                        msg: 'ERROR GET TOKEN - Registration',
+                        msg: 'ERROR GET TOKEN - Login',
                         err: err
                     })
                 }
@@ -68,7 +71,7 @@ module.exports = {
           .catch(error => {
             res.status(500).json({
                 msg: 'ERROR Login',
-                er: error
+                err: error
             })
           })
     }

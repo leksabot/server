@@ -9,12 +9,14 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGO_USER,{useNewUrlParser: true})
 
 const IndexRoutes = require('./routes/index')
+const QuestionRoutes = require('./routes/question')
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/user', IndexRoutes)
+app.use('/question', QuestionRoutes)
 app.get('/', (req,res)=> {
     res.send('OK')
 })

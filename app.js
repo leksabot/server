@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser =  require('body-parser');
 const cors = require('cors');
+
 const mongoose = require('mongoose')
 
 if(process.env.NODE_ENV !== 'test'){
@@ -16,6 +17,10 @@ if(process.env.NODE_ENV !== 'test'){
 const IndexRoutes = require('./routes/index')
 const QuestionRoutes = require('./routes/question')
 
+
+// const getObject = require('./routes/detectobject.js');
+// const getTranslate = require('./routes/translate.js');
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,6 +30,9 @@ app.use('/question', QuestionRoutes)
 app.get('/', (req,res)=> {
     res.send('OK')
 })
+
+// app.use('/detectobject', getObject);
+// app.use('/translate', getTranslate);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening to port `,process.env.PORT)

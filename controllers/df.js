@@ -36,21 +36,31 @@ module.exports = {
                 let result = responses[0].queryResult;
                 let { keyword, name1, name2, title } = result.parameters.fields
                 
-                
-                let frenchQuestion = result.queryText
                 let languageFrench = result.languageCode
-                let frenchCheck = frenchValidator(frenchQuestion)
                 // console.log('test----', frenchQuestion, languageFrench)
                 // console.log('result-----', frenchCheck)
                 // console.log(result.intent.displayName)
 
-                if (frenchCheck.status && result.intent.displayName === 'smalltalk.user.joking' && languageFrench === 'fr'){
+                if (result.intent.displayName === 'custom.agent.search' && languageFrench === 'fr'){
+                    let frenchQuestion = result.queryText.toLowerCase()
+                    let frenchValue = keyword.stringValue.toLowerCase()
+                    let inputRegex = frenchValue.slice(0, frenchValue.length-8)
+                    let frenchCheck = frenchValidator(inputRegex,frenchQuestion)
+
 
                     // console.log('french ok', frenchCheck.word, '-', frenchCheck.word.length)
-                    frenchSearch(res, frenchCheck.word)
+                    if(frenchCheck.status) {
+                        frenchSearch(res, frenchCheck.word)
+                    } else {
+                        res.status(200).json({
+                            msg: 'Je ne comprends pas votre question'
+                        })
+                    }
 
                 }else if (result.intent.displayName === 'custom.agent.search') {
+
                     let kwVal = keyword.stringValue
+                    console.log('keyword----', result.queryText)
                     if (kwVal && kwVal.length > 0) {
                         qLen = kwVal.slice(0, kwVal.length-8).length
                         kwReal = result.queryText.slice(qLen)

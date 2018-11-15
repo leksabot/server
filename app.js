@@ -19,7 +19,7 @@ const QuestionRoutes = require('./routes/question')
 const df = require('./routes/df')
 
 const getObject = require('./routes/detectobject.js');
-// const getTranslate = require('./routes/translate.js');
+const getTranslate = require('./routes/translate.js');
 
 const app = express();
     app.use(cors());
@@ -33,7 +33,7 @@ const app = express();
 })
 
 app.use('/detectobject', getObject);
-// app.use('/translate', getTranslate);
+app.use('/translate', getTranslate);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening to port `, process.env.PORT || 3000)

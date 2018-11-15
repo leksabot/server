@@ -9,57 +9,57 @@ const expect = chai.expect
 
 describe('User register and login test', ()=> {
     it('should give a success message and token if register is successful', (done)=> {
-        chai.request(app)
-            .post('/user/register')
-            .send({
-                name: 'Indro',
-                email: 'indro@mail.com',
-                password: '123456',
-                language: 'ID'
-            })
-            .end((err,res)=>{
-                expect(res).to.have.status(201)
-                expect(res.body).to.haveOwnProperty('msg')
-                expect(res.body).to.haveOwnProperty('token')
-                expect(res.body).to.haveOwnProperty('lang')
-                expect(res.body.lang).to.equal('ID')
-                expect(res.body.msg).to.equal('Registration success')
-                done()
-            })
+      chai.request(app)
+          .post('/user/register')
+          .send({
+            name: 'Indro',
+            email: 'indro@mail.com',
+            password: '123456',
+            language: 'ID'
+          })
+          .end((err,res)=>{
+            expect(res).to.have.status(201)
+            expect(res.body).to.haveOwnProperty('msg')
+            expect(res.body).to.haveOwnProperty('token')
+            expect(res.body).to.haveOwnProperty('lang')
+            expect(res.body.lang).to.equal('ID')
+            expect(res.body.msg).to.equal('Registration success')
+            done()
+          })
     })
 
     it('should give a success message and token if login is successfull', (done) => {
-        chai.request(app)
-            .post('/user/register')
-            .send({
-                name: 'Kasino',
-                email: 'kasino@mail.com',
-                password: '123456',
-                language: 'ID'
-            })
-            .end((err,res)=> {
-                expect(res).to.have.status(201)
-                expect(res.body).to.haveOwnProperty('msg')
-                expect(res.body).to.haveOwnProperty('token')
-                expect(res.body).to.haveOwnProperty('lang')
-                expect(res.body.lang).to.equal('ID')
-                expect(res.body.msg).to.equal('Registration success')
-                chai.request(app)
-                    .post('/user/login')
-                    .send({
-                        email: 'kasino@mail.com',
-                        password: '123456'
-                    })
-                    .end((err,res)=> {
-                        expect(res).to.have.status(201)
-                        expect(res.body).to.haveOwnProperty('msg')
-                        expect(res.body).to.haveOwnProperty('token')
-                        expect(res.body).to.haveOwnProperty('lang')
-                        expect(res.body.lang).to.equal('ID')
-                        expect(res.body.msg).to.equal('Login success')
-                        done()
-                    })
-            })
+      chai.request(app)
+          .post('/user/register')
+          .send({
+            name: 'Kasino',
+            email: 'kasino@mail.com',
+            password: '123456',
+            language: 'ID'
+          })
+          .end((err,res)=> {
+            expect(res).to.have.status(201)
+            expect(res.body).to.haveOwnProperty('msg')
+            expect(res.body).to.haveOwnProperty('token')
+            expect(res.body).to.haveOwnProperty('lang')
+            expect(res.body.lang).to.equal('ID')
+            expect(res.body.msg).to.equal('Registration success')
+            chai.request(app)
+                .post('/user/login')
+                .send({
+                  email: 'kasino@mail.com',
+                  password: '123456'
+                })
+                .end((err,res)=> {
+                  expect(res).to.have.status(201)
+                  expect(res.body).to.haveOwnProperty('msg')
+                  expect(res.body).to.haveOwnProperty('token')
+                  expect(res.body).to.haveOwnProperty('lang')
+                  expect(res.body.lang).to.equal('ID')
+                  expect(res.body.msg).to.equal('Login success')
+                  done()
+                })
+          })
     })
 
 

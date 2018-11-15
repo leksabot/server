@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha test/*.js",
+    "test": "nyc mocha",
     "dev": "nodemon app.js"
   },
   "repository": {
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
   }
 }

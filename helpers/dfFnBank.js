@@ -64,14 +64,43 @@ module.exports = {
                     }
                 })
                 .catch(err => {
+                    console.log(err)
                     res.status(500).json({message: err})
                 })
             })
             .catch(err => {
+                console.log(err)
                 res.status(500).json({message: err})
             })
         } else {
             res.status(200).json({reply: "Sorry, but it seems that we can't find anything that matches your search."})
         }
+    },
+
+    tasteDive_movie (res, title) {
+        let query = title.toLowerCase().split(' ').join('+')
+        console.log(query)
+        axios({
+            url: `https://tastedive.com/api/similar?q=${query}&type=movies&info=1&limit=1&k=${process.env.TD_API_KEY}`
+        })
+        .then(({data}) => {
+            if (data.Similar.Results.length > 0) {
+                const { Name, wTeaser } = data.Similar.Results[0]
+                let summary = wTeaser.split('\n').join(' ')
+                if (summary[0] === ' ') {
+                    summary = summary.slice(1)
+                }
+                if (summary[summary.length - 1] === ' ') {
+                    summary = summary.slice(0, summary.length - 1)
+                }
+                res.status(200).json({reply: { title: Name, summary }, type: 'card'})
+            } else {
+                res.status(200).json({reply: "Sorry, but it seems that we can't give you any recommendation on that."})
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({message: err})
+        })
     }
 }

@@ -48,24 +48,30 @@ module.exports = {
         })
           .then(user => {
             let nativeLang = user.language
-            jwt.sign({
-                name: user.name,
-                email: user.email,
-                language: user.language
-            },process.env.SECRET_TOKEN, (err,token)=>{
-                if(!err){
-                    res.status(201).json({
-                        msg: 'Login success',
-                        token: token,
-                        lang: nativeLang
-                    })
-                } else {
-                    res.status(500).json({
-                        msg: 'ERROR GET TOKEN - Login',
-                        err: err
-                    })
-                }
-            })
+            if(user) {
+                jwt.sign({
+                    name: user.name,
+                    email: user.email,
+                    language: user.language
+                },process.env.SECRET_TOKEN, (err,token)=>{
+                    if(!err){
+                        res.status(201).json({
+                            msg: 'Login success',
+                            token: token,
+                            lang: nativeLang
+                        })
+                    } else {
+                        res.status(500).json({
+                            msg: 'ERROR GET TOKEN - Login',
+                            err: err
+                        })
+                    }
+                })
+            } else if (user=== null) {
+                res.status(400).json({
+                    err: 'User is not found'
+                })    
+            }
           })
           .catch(error => {
             res.status(500).json({

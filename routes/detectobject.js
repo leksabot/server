@@ -1,14 +1,11 @@
+'use strict'
+
+const router = require('express').Router();
+const {DetectInfo} = require('../controllers/detectObject');
+
 const helpers = require('../helpers/images')
-module.exports = {
-    
-    Createimage: (req, res) => {  
-        if (req.hasOwnProperty('file')){
-            
-          //      imageurl: req.file.cloudStoragePublicUrl
-            
-        }else
-        {
-            console.log('Image not found')
-        }
-    }
-}
+
+router.post('/',  helpers.multer.single('imagefile'), helpers.sendUploadToGCS, DetectInfo);
+
+
+module.exports = router;

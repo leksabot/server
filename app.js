@@ -18,7 +18,7 @@ const IndexRoutes = require('./routes/index')
 const QuestionRoutes = require('./routes/question')
 const df = require('./routes/df')
 
-// const getObject = require('./routes/detectobject.js');
+const getObject = require('./routes/detectobject.js');
 // const getTranslate = require('./routes/translate.js');
 
 const app = express();
@@ -32,7 +32,7 @@ const app = express();
         res.send('OK')
 })
 
-// app.use('/detectobject', getObject);
+app.use('/detectobject', getObject);
 // app.use('/translate', getTranslate);
 
 app.listen(process.env.PORT || 3000, () => {

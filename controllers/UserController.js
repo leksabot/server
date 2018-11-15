@@ -47,8 +47,8 @@ module.exports = {
             password: hash
         })
           .then(user => {
-            let nativeLang = user.language
             if(user) {
+                let nativeLang = user.language
                 jwt.sign({
                     name: user.name,
                     email: user.email,

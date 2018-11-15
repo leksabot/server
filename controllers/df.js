@@ -4,7 +4,9 @@ let sessionId = String(Date.now())
 const dialogflow = require('dialogflow')
 const sessionClient = new dialogflow.SessionsClient()
 
-const { searchMW, searchTMDB, tasteDive_movie }  = require('../helpers/dfFnBank')
+const { searchMW, searchTMDB, tasteDive_movie, frenchSearch }  = require('../helpers/dfFnBank')
+
+const frenchValidator = require('../helpers/frenchValidator')
 
 module.exports = {
     
@@ -34,10 +36,24 @@ module.exports = {
                 let result = responses[0].queryResult;
                 let intentType = result.intent.displayName
                 let { keyword, name1, name2, title } = result.parameters.fields
+                let languageQuery = result.languageCode
                 switch (intentType) {
                     case 'custom.agent.search': {
                         let kwVal = keyword.stringValue
-                        if (kwVal && kwVal.length > 0 && result.queryText.slice(0,3) !== 'who' && result.queryText.slice(0,3) !== 'Who') {
+                        if(languageQuery === 'fr'){
+                            let frenchQuestion = result.queryText.toLowerCase()
+                            let frenchValue = keyword.stringValue.toLowerCase()
+                            let inputRegex = frenchValue.slice(0, frenchValue.length-8)
+                            let frenchCheck = frenchValidator(inputRegex,frenchQuestion)
+
+                            if(frenchCheck.status) {
+                                frenchSearch(res, frenchCheck.word)
+                            } else {
+                                res.status(200).json({
+                                    msg: 'Je ne comprends pas votre question'
+                                })
+                            }
+                        } else if (kwVal && kwVal.length > 0 && result.queryText.slice(0,3) !== 'who' && result.queryText.slice(0,3) !== 'Who') {
                             qLen = kwVal.slice(0, kwVal.length-8).length
                             kwReal = result.queryText.slice(qLen)
                             searchMW(res, kwReal)

@@ -69,6 +69,7 @@ module.exports = {
                         }
                         break
                     }
+                    case 'custom.agent.uninstall':
                     case 'smalltalk.agent.annoying':
                     case 'smalltalk.agent.boring':
                     case 'smalltalk.agent.be_clever':

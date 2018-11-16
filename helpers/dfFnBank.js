@@ -10,10 +10,10 @@ module.exports = {
             url: `https://dictionaryapi.com/api/v3/references/sd2/json/${kwReal}?key=87fd2933-68d1-4068-9196-89cef3d32419`
         })
         .then(({data}) => {
-            if (data && data.length > 0) {
+            if (data && data.length > 0 && data[0].shortdef && data[0].shortdef.length > 0) {
                 res.status(200).json({reply: `According to Merriam-Webster, ${kwReal} can be defined as ${data[0].shortdef[0]}.`})
             } else {
-                res.status(200).json({reply: "Sorry, but I didn't get it, could you rephrase it please?"})
+                res.status(200).json({reply: "Sorry, but I didn't get any result or maybe I just didn't get it, could you search for something else or rephrase your search, please?"})
             }
         })
         .catch(err => {
@@ -79,7 +79,6 @@ module.exports = {
 
     tasteDive_movie (res, title) {
         let query = title.toLowerCase().split(' ').join('+')
-        console.log(query)
         axios({
             url: `https://tastedive.com/api/similar?q=${query}&type=movies&info=1&limit=1&k=${process.env.TD_API_KEY}`
         })

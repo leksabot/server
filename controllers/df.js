@@ -14,7 +14,7 @@ module.exports = {
         if (req.body.message && req.body.langcode) {
             
             let now = Date.now()
-            if (Number(now) - Number(sessionId) > 1800000) {
+            if (Number(now) - Number(sessionId) > 1800000 || process.env.NODE_ENV === 'test') {
                 sessionId = String(now)
             }
 
@@ -24,8 +24,8 @@ module.exports = {
                 session: sessionPath,
                 queryInput: {
                     text: {
-                    text: req.body.message,
-                    languageCode: req.body.langcode
+                        text: req.body.message,
+                        languageCode: req.body.langcode
                     }
                 }
             }
@@ -40,7 +40,7 @@ module.exports = {
                 switch (intentType) {
                     case 'custom.agent.search': {
                         let kwVal = keyword.stringValue
-                        if(languageQuery === 'fr'){
+                        if (languageQuery === 'fr') {
                             let frenchQuestion = result.queryText.toLowerCase()
                             let frenchValue = keyword.stringValue.toLowerCase()
                             let inputRegex = frenchValue.slice(0, frenchValue.length-8)
@@ -63,7 +63,7 @@ module.exports = {
                                 name1 = kwStruct.fields.name1
                                 name2 = kwStruct.fields.name2
                             }
-                            if (name2.stringValue.length < 1) {
+                            if (name2 && name2.stringValue.length < 1) {
                                 let name1FirstIndex = result.queryText.indexOf(name1.stringValue)
                                 let name1LastIndex = name1FirstIndex + name1.stringValue.length + 1
                                 if (result.queryText[name1LastIndex]) {
@@ -71,7 +71,10 @@ module.exports = {
                                 }
                             }
                             let n1Val = name1.stringValue
-                            let n2Val = name2.stringValue
+                            let n2Val = ''
+                            if (name2) {
+                                n2Val = name2.stringValue
+                            }
                             searchTMDB(req, res, n1Val, n2Val)
                         }
                         break
@@ -92,6 +95,7 @@ module.exports = {
                     case 'smalltalk.appraisal.bad':
                     case 'smalltalk.agent.bad': {
                         res.status(200).json({reply: result.fulfillmentText, emotion: 'sad'})
+                        break
                     }
                     case 'smalltalk.agent.funny':
                     case 'smalltalk.agent.good':
@@ -100,20 +104,22 @@ module.exports = {
                     case 'smalltalk.user.misses_agent':
                     case 'smalltalk.agent.clever': {
                         res.status(200).json({reply: result.fulfillmentText, emotion: 'happy'})
+                        break
                     }
                     case 'smalltalk.agent.beautiful':
                     case 'smalltalk.user.loves_agent': {
                         res.status(200).json({reply: result.fulfillmentText, emotion: 'flattered'})
+                        break
                     }
                     default: {
                         res.status(200).json({reply: result.fulfillmentText})
                     }
                 }
             })
-            .catch(err => {
-                console.log(err)
-                res.status(500).json({message: err})
-            })
+            // .catch(err => {
+            //     console.log(err)
+            //     res.status(500).json({message: err})
+            // })
         } else {
             res.status(500).json({message: "Hey, really? What's happening on the front-end? ('message' & 'langcode' is needed)"})
         }

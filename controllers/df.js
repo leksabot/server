@@ -138,10 +138,10 @@ module.exports = {
                     }
                 }
             })
-            // .catch(err => {
-            //     console.log(err)
-            //     res.status(500).json({message: err})
-            // })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({message: err})
+            })
         } else {
             res.status(500).json({message: "Hey, really? What's happening on the front-end? ('message' & 'langcode' is needed)"})
         }

@@ -105,21 +105,18 @@ module.exports = {
 
     frenchSearch (res, word) {
         let url = `https://glosbe.com/gapi/translate?from=fra&dest=fra&format=json&phrase=${word}&pretty=true` 
-        
-        // console.log(url)
         axios({
             url: url
         })
         .then(result => {
             let initialData = result.data.tuc
             let definition = initialData[0].meanings[0].text
-            // console.log('hasil----', definition)
             res.status(200).json({
                 reply: `la définition de ${word} est ${definition}`
             })
         })
         .catch(error => {
-            // console.log('ini error-----', error)
+            // console.log('error-------',error)
             res.status(500).json({
                 message: error
             })

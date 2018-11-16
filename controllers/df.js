@@ -11,16 +11,39 @@ const frenchValidator = require('../helpers/frenchValidator')
 module.exports = {
     
     reply (req, res) {
-        if (req.body.message && req.body.langcode) {
-            
-            let now = Date.now()
-            if (Number(now) - Number(sessionId) > 1800000 || process.env.NODE_ENV === 'test') {
-                sessionId = String(now)
-            }
 
-            const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+        let check = req.body.originalDetectIntentRequest
+        let now = Date.now()
+        if(Number(now) - Number(sessionId) > 1800000) {
+           sessionId = String(now)                      
+        }
+        const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+        let request = {}
 
-            const request = {
+
+        if(check !== undefined && check.source === 'telegram'){
+          //console.log('masuk telegram--------------', check)
+          request = {
+                session: sessionPath,
+                queryInput: {
+                    text: {
+                    text: req.body.queryResult.queryText,
+                    languageCode: req.body.queryResult.languageCode
+                    }
+                }
+            }   
+          sessionClient
+            .detectIntent(request)
+            .then(responses => {
+                console.log('responses-----', responses)
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({message: err})
+            }) 
+          
+        } else if (req.body.message && req.body.langcode) {    
+            request = {
                 session: sessionPath,
                 queryInput: {
                     text: {
@@ -29,7 +52,6 @@ module.exports = {
                     }
                 }
             }
-    
             sessionClient
             .detectIntent(request)
             .then(responses => {
@@ -45,7 +67,6 @@ module.exports = {
                             let frenchValue = keyword.stringValue.toLowerCase()
                             let inputRegex = frenchValue.slice(0, frenchValue.length-8)
                             let frenchCheck = frenchValidator(inputRegex,frenchQuestion)
-
                             if(frenchCheck.status) {
                                 frenchSearch(res, frenchCheck.word)
                             } else {
@@ -116,10 +137,10 @@ module.exports = {
                     }
                 }
             })
-            // .catch(err => {
-            //     console.log(err)
-            //     res.status(500).json({message: err})
-            // })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({message: err})
+            })
         } else {
             res.status(500).json({message: "Hey, really? What's happening on the front-end? ('message' & 'langcode' is needed)"})
         }

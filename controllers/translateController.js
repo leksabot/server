@@ -1,4 +1,4 @@
-const axios = require('axios')
+
 const apiKey=process.env.GOOGLE_VISION_API
 var googleTranslate = require('google-translate')(apiKey); 
 module.exports = {

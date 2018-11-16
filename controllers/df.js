@@ -11,16 +11,39 @@ const frenchValidator = require('../helpers/frenchValidator')
 module.exports = {
     
     reply (req, res) {
-        if (req.body.message && req.body.langcode) {
-            
-            let now = Date.now()
-            if (Number(now) - Number(sessionId) > 1800000 || process.env.NODE_ENV === 'test') {
-                sessionId = String(now)
+        let check = req.body.originalDetectIntentRequest
+        let now = Date.now()
+        if(Number(now) - Number(sessionId) > 1800000) {
+           sessionId = String(now)                      
+        }
+        const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+        let request = {}
+
+
+        if(check !== undefined && check.source === 'telegram'){
+          //console.log('masuk telegram--------------', check)
+          request = {
+                session: sessionPath,
+                queryInput: {
+                    text: {
+                    text: req.body.queryResult.queryText,
+                    languageCode: req.body.queryResult.languageCode
+                    }
+                }
             }
-
-            const sessionPath = sessionClient.sessionPath(projectId, sessionId);
-
-            const request = {
+          
+          sessionClient
+            .detectIntent(request)
+            .then(responses => {
+                console.log('responses-----', responses)
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({message: err})
+            }) 
+          
+        } else if (req.body.message && req.body.langcode) {    
+            request = {
                 session: sessionPath,
                 queryInput: {
                     text: {
@@ -29,7 +52,7 @@ module.exports = {
                     }
                 }
             }
-    
+
             sessionClient
             .detectIntent(request)
             .then(responses => {

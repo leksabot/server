@@ -45,7 +45,6 @@ module.exports = {
                             let frenchValue = keyword.stringValue.toLowerCase()
                             let inputRegex = frenchValue.slice(0, frenchValue.length-8)
                             let frenchCheck = frenchValidator(inputRegex,frenchQuestion)
-
                             if(frenchCheck.status) {
                                 frenchSearch(res, frenchCheck.word)
                             } else {

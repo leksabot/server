@@ -11,6 +11,7 @@ const frenchValidator = require('../helpers/frenchValidator')
 module.exports = {
     
     reply (req, res) {
+
         let check = req.body.originalDetectIntentRequest
         let now = Date.now()
         if(Number(now) - Number(sessionId) > 1800000) {
@@ -30,8 +31,7 @@ module.exports = {
                     languageCode: req.body.queryResult.languageCode
                     }
                 }
-            }
-          
+            }   
           sessionClient
             .detectIntent(request)
             .then(responses => {
@@ -52,7 +52,6 @@ module.exports = {
                     }
                 }
             }
-
             sessionClient
             .detectIntent(request)
             .then(responses => {

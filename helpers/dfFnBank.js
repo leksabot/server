@@ -7,7 +7,7 @@ module.exports = {
             kwReal = kwReal.slice(0, kwReal.length - 1)
         }
         axios({
-            url: `https://dictionaryapi.com/api/v3/references/sd2/json/${kwReal}?key=87fd2933-68d1-4068-9196-89cef3d32419`
+            url: `https://dictionaryapi.com/api/v3/references/sd2/json/${kwReal}?key=${process.env.MW_API_KEY}`
         })
         .then(({data}) => {
             if (data && data.length > 0 && data[0].shortdef && data[0].shortdef.length > 0) {
@@ -115,8 +115,8 @@ module.exports = {
                 reply: `la définition de ${word} est ${definition}`
             })
         })
-        .catch(error => {
-            // console.log('error-------',error)
+        .catch(err => {
+            console.log(err)
             res.status(500).json({
                 message: error
             })

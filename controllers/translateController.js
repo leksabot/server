@@ -15,7 +15,7 @@ module.exports = {
             res.status(500).json({message: `invalid input parameter translate`})
         }
     },
-    TranslateDetect: (req, res) => {        
+    TranslateDetect: (req, res) => {  
         if (req.body.text!==undefined && req.body.motherlanguage!==undefined){
             googleTranslate.translate(req.body.text, req.body.motherlanguage, function(err, translation) {
                 //console.log(translation.translatedText);

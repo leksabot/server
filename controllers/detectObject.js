@@ -5,6 +5,8 @@ var googleTranslate = require('google-translate')(apiKey);
 const fs = require('fs');
 module.exports = {
     AutoNoGCP: (req, res) => { 
+        console.log('req.file--------------------',req.file)
+        console.log('req.body--------------------',req.body)
         if (req.hasOwnProperty('file')==undefined || req.body.motherlanguage ==undefined){
             res.status(500).json({message: `file not found/invalid mother language`})
         }

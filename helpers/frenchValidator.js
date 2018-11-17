@@ -9,7 +9,7 @@ function frenchValidator(inputRegex, input){
     let word = input.slice(questionMark,inputLength)
    
     let obj = {}
-
+    console.log('testing-------------', inputRegex, input)
     if(regex.test(input)) {
         obj.status = true
         obj.word = word

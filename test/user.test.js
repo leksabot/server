@@ -170,11 +170,9 @@ describe('User register and login test', ()=> {
                         password: '123456'
                     })
                     .end((err,res)=> {
-                        expect(res).to.have.status(500)
-                        expect(res.body).to.haveOwnProperty('msg')
+                        expect(res).to.have.status(400)
                         expect(res.body).to.haveOwnProperty('err')
-                        expect(res.body.msg).to.equal('ERROR Login')
-                        expect(res.body.err).to.be.a('object')
+                        expect(res.body.err).to.equal('User is not found')
                         done()
                     })
             })
@@ -203,11 +201,9 @@ describe('User register and login test', ()=> {
                         password: '123'
                     })
                     .end((err,res)=> {
-                        expect(res).to.have.status(500)
-                        expect(res.body).to.haveOwnProperty('msg')
+                        expect(res).to.have.status(400)
                         expect(res.body).to.haveOwnProperty('err')
-                        expect(res.body.msg).to.equal('ERROR Login')
-                        expect(res.body.err).to.be.a('object')
+                        expect(res.body.err).to.equal('User is not found')
                         done()
                     })
             })

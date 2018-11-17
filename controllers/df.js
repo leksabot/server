@@ -119,5 +119,9 @@ module.exports = {
         } else {
             res.status(500).json({message: "Hey, really? What's happening on the front-end? ('message' & 'langcode' is needed)"})
         }
+    },
+
+    define (req, res) {
+        searchMW(res, req.body.keyword, 'long')
     }
 }

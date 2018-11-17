@@ -2,7 +2,7 @@ const axios = require('axios')
 
 module.exports = {
 
-    searchMW (res, kwReal) {
+    searchMW (res, kwReal, type) {
         if (kwReal[kwReal.length - 1] === '?') {
             kwReal = kwReal.slice(0, kwReal.length - 1)
         }
@@ -11,7 +11,11 @@ module.exports = {
         })
         .then(({data}) => {
             if (data && data.length > 0 && data[0].shortdef && data[0].shortdef.length > 0) {
-                res.status(200).json({reply: `According to Merriam-Webster, ${kwReal} can be defined as ${data[0].shortdef[0]}.`})
+                if (type === 'long') {
+                    res.status(200).json({reply: data[0].shortdef})
+                } else {
+                    res.status(200).json({reply: `According to Merriam-Webster, ${kwReal} can be defined as ${data[0].shortdef[0]}.`})
+                }
             } else {
                 res.status(200).json({reply: "Sorry, but I didn't get any result or maybe I just didn't get it, could you search for something else or rephrase your search, please?"})
             }

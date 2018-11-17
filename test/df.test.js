@@ -381,3 +381,38 @@ describe ('Reply System Test', () => {
         })
     })
 })
+
+describe('Define System', () => {
+
+    it('found | should return array of definition', (done) => {
+        chai
+        .request(app)
+        .post('/df/define')
+        .send({
+            keyword: 'test',
+        })
+        .end((err, res) => {
+            expect(res).to.have.status(200)
+            expect(res.body).to.haveOwnProperty('reply')
+            expect(res.body.reply).to.be.a('array')
+            expect(res.body.reply).not.to.have.length(0)
+            done()
+        })
+    })
+
+    it('not found | should return a string', (done) => {
+        chai
+        .request(app)
+        .post('/df/define')
+        .send({
+            keyword: 'notfound',
+        })
+        .end((err, res) => {
+            expect(res).to.have.status(200)
+            expect(res.body).to.haveOwnProperty('reply')
+            expect(res.body.reply).to.be.a('string')
+            expect(res.body.reply).not.to.have.length(0)
+            done()
+        })
+    })
+})

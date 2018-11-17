@@ -22,18 +22,17 @@ const getObject = require('./routes/detectobject.js');
 const getTranslate = require('./routes/translate.js');
 
 const app = express();
-    app.use(cors());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use('/user', IndexRoutes)
-    app.use('/question', QuestionRoutes)
-    app.use('/df', df)
-    app.get('/', (req,res)=> {
-        res.send('OK')
-})
-
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/user', IndexRoutes)
+app.use('/question', QuestionRoutes)
+app.use('/df', df)
 app.use('/detectobject', getObject);
 app.use('/translate', getTranslate);
+app.get('/', (req,res) => {
+    res.send('OK')
+})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening to port `, process.env.PORT || 3000)

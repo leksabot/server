@@ -1,6 +1,7 @@
 const router = require('express').Router()
-const { reply } = require('../controllers/df')
+const { reply, define } = require('../controllers/df')
 
 router.post('/', reply )
+router.post('/define', define )
 
 module.exports = router;

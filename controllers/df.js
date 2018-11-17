@@ -5,45 +5,20 @@ const dialogflow = require('dialogflow')
 const sessionClient = new dialogflow.SessionsClient()
 
 const { searchMW, searchTMDB, tasteDive_movie, frenchSearch }  = require('../helpers/dfFnBank')
-
 const frenchValidator = require('../helpers/frenchValidator')
 
 module.exports = {
     
     reply (req, res) {
 
-        let check = req.body.originalDetectIntentRequest
         let now = Date.now()
         if(Number(now) - Number(sessionId) > 1800000) {
            sessionId = String(now)                      
         }
-        const sessionPath = sessionClient.sessionPath(projectId, sessionId);
-        let request = {}
-
-
-        if(check !== undefined && check.source === 'telegram'){
-          //console.log('masuk telegram--------------', check)
-          request = {
-                session: sessionPath,
-                queryInput: {
-                    text: {
-                    text: req.body.queryResult.queryText,
-                    languageCode: req.body.queryResult.languageCode
-                    }
-                }
-            }   
-          sessionClient
-            .detectIntent(request)
-            .then(responses => {
-                console.log('responses-----', responses)
-            })
-            .catch(err => {
-                console.log(err)
-                res.status(500).json({message: err})
-            }) 
-          
-        } else if (req.body.message && req.body.langcode) {    
-            request = {
+        
+        if (req.body.message && req.body.langcode) {    
+            const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+            const request = {
                 session: sessionPath,
                 queryInput: {
                     text: {

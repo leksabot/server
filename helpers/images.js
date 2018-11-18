@@ -1,4 +1,5 @@
 'use strict'
+/* istanbul ignore file */
 require('dotenv').config()
 
 const Storage = require('@google-cloud/storage')

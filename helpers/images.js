@@ -17,7 +17,7 @@ const getPublicUrl = (filename) => {
 }
 
 const sendUploadToGCS = (req, res, next) => {
-  console.log('uploaded to GCS-------------')
+  // console.log('uploaded to GCS-------------')
   if (!req.file) {
     return next()
   }
@@ -40,8 +40,12 @@ const sendUploadToGCS = (req, res, next) => {
     req.file.cloudStorageObject = gcsname
     file.makePublic().then(() => {
       req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
+      // console.log('finish------------------')
       next()
     })
+    .catch (()=> {
+      console.log('error while uploading to gcs')
+    }) 
   })
 
   stream.end(req.file.buffer)

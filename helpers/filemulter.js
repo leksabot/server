@@ -4,8 +4,8 @@ require('dotenv').config()
 const Multer = require('multer'),
       multer = Multer({
         fileFilter: function(req,file,cb){
-          // console.log('FILE-----', file.mimetype)
-          // console.log('Type of-----', typeof file.mimetype)
+          //console.log('FILE-----', file.mimetype)
+          //console.log('Type of-----', typeof file.mimetype)
 
           if(file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg' || file.mimetype == 'image/png'){
               

@@ -17,6 +17,7 @@ const getPublicUrl = (filename) => {
 }
 
 const sendUploadToGCS = (req, res, next) => {
+  // console.log('uploaded to GCS-------------')
   if (!req.file) {
     return next()
   }
@@ -39,8 +40,12 @@ const sendUploadToGCS = (req, res, next) => {
     req.file.cloudStorageObject = gcsname
     file.makePublic().then(() => {
       req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
+      // console.log('finish------------------')
       next()
     })
+    .catch (()=> {
+      console.log('error while uploading to gcs')
+    }) 
   })
 
   stream.end(req.file.buffer)
@@ -48,11 +53,21 @@ const sendUploadToGCS = (req, res, next) => {
 
 const Multer = require('multer'),
       multer = Multer({
+        fileFilter: function(req,file,cb){
+          //console.log('FILE-----', file.mimetype)
+          //console.log('Type of-----', typeof file.mimetype)
+
+          if(file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg' || file.mimetype == 'image/png'){
+              
+              cb(null,true)
+          }else{
+              cb(new Error('Only .jpg, .jpeg, and .png files allowed'))
+          }
+        }, 
         storage: Multer.MemoryStorage,
         limits: {
           fileSize: 5 * 1024 * 1024
         }
-        // dest: '../images'
       })
 
 module.exports = {

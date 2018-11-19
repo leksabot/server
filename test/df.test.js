@@ -400,6 +400,21 @@ describe('Define System', () => {
         })
     })
 
+    it('found | should return array of definition (fr)', (done) => {
+        chai
+        .request(app)
+        .post('/df/definefrench')
+        .send({
+            keyword: 'test',
+        })
+        .end((err, res) => {
+            expect(res).to.have.status(200)
+            expect(res.body).to.haveOwnProperty('reply')
+            expect(res.body.reply).to.equal('la définition de test est Une session pendant laquelle un produit ou un équipement est placée dans des conditions habituelles ou extrêmes et où l&#39;on examine sa durabilité, etc.')
+            done()
+        })
+    })
+
     it('not found | should return a string', (done) => {
         chai
         .request(app)

@@ -123,5 +123,9 @@ module.exports = {
 
     define (req, res) {
         searchMW(res, req.body.keyword, 'long')
+    },
+
+    definefrench (req,res) {
+        frenchSearch(res, req.body.keyword)
     }
 }

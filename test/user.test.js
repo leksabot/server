@@ -8,6 +8,8 @@ chai.use(chaiHttp)
 const expect = chai.expect
 
 describe('User register and login test', ()=> {
+    let token = ''
+
     it('should give a success message and token if register is successful', (done)=> {
       chai.request(app)
           .post('/user/register')
@@ -61,6 +63,40 @@ describe('User register and login test', ()=> {
                 })
           })
     })
+
+    it('should update the language of user', (done) => {
+        chai.request(app)
+            .post('/user/register')
+            .send({
+              name: 'Indra birowo',
+              email: 'indra@mail.com',
+              password: '123456',
+              language: 'FR'
+            })
+            .end((err,res)=> {
+              token = res.body.token  
+              expect(res).to.have.status(201)
+              expect(res.body).to.haveOwnProperty('msg')
+              expect(res.body).to.haveOwnProperty('token')
+              expect(res.body).to.haveOwnProperty('lang')
+              expect(res.body.lang).to.equal('FR')
+              expect(res.body.msg).to.equal('Registration success')
+              chai.request(app)
+                  .put('/user/updatelanguage')
+                  .set('token', token)
+                  .send({
+                    language: 'EN'
+                  })
+                  .end((err,res)=> {
+                    expect(res).to.have.status(201)
+                    expect(res.body).to.haveOwnProperty('msg')
+                    expect(res.body).to.haveOwnProperty('lang')
+                    expect(res.body.lang).to.equal('EN')
+                    expect(res.body.msg).to.equal('Update language success')
+                    done()
+                  })
+            })
+      })
 
 
     // Negative Test
@@ -208,6 +244,62 @@ describe('User register and login test', ()=> {
                     })
             })
     })
+
+    it('should give error message if language input is not valid', (done)=> {
+        chai.request(app)
+        .post('/user/register')
+        .send({
+            name: 'Dora',
+            email: 'dora@mail.com',
+            password: '123456',
+            language: 'INDONESIA'
+        })
+        .end((err,res)=>{
+            expect(res).to.have.status(500)
+            expect(res.body).to.be.a('object')
+            expect(res.body).to.haveOwnProperty('msg')
+            expect(res.body).to.haveOwnProperty('err')
+            expect(res.body.msg).to.equal('ERROR Registration')
+            expect(res.body.err).to.haveOwnProperty('errors')
+            expect(res.body.err.errors).to.haveOwnProperty('language')
+            expect(res.body.err.errors.language).to.haveOwnProperty('message')
+            expect(res.body.err.errors.language.message).to.equal('Language code should have maximum 2 characters')
+            expect(res.body.err.errors.language.properties.value).to.equal('INDONESIA')
+            done()
+        })
+    })
+
+    it('should give error message if update language input is not valid', (done) => {
+        chai.request(app)
+            .post('/user/register')
+            .send({
+              name: 'Brad Pitt',
+              email: 'bardpit@mail.com',
+              password: '123456',
+              language: 'EN'
+            })
+            .end((err,res)=> {
+              token = res.body.token  
+              expect(res).to.have.status(201)
+              expect(res.body).to.haveOwnProperty('msg')
+              expect(res.body).to.haveOwnProperty('token')
+              expect(res.body).to.haveOwnProperty('lang')
+              expect(res.body.lang).to.equal('EN')
+              expect(res.body.msg).to.equal('Registration success')
+              chai.request(app)
+                  .put('/user/updatelanguage')
+                  .set('token', token)
+                  .send({
+                    language: 'ENGLISH'
+                  })
+                  .end((err,res)=> {
+                    expect(res).to.have.status(500)
+                    expect(res.body).to.haveOwnProperty('err')
+                    expect(res.body.err).to.equal('Language code should have maximum 2 characters')
+                    done()
+                  })
+            })
+      })
 
 
     afterEach((done)=> {

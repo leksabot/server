@@ -6,6 +6,7 @@ const hashPassword = require('../helpers/hashPassword')
 
 module.exports = {
     register: function (req,res) {
+        console.log('req.body----------', req.body)
         User.create({
             name: req.body.name,
             email: req.body.email,
@@ -13,8 +14,10 @@ module.exports = {
             language: req.body.language
         })
          .then(user => {
+            console.log('user register-------', user)
             let nativeLang = user.language
             jwt.sign({
+                userid: user._id,
                 name: user.name,
                 email: user.email,
                 language: user.language
@@ -50,6 +53,7 @@ module.exports = {
             if(user) {
                 let nativeLang = user.language
                 jwt.sign({
+                    userid: user._id,
                     name: user.name,
                     email: user.email,
                     language: user.language
@@ -76,6 +80,26 @@ module.exports = {
           .catch(error => {
             res.status(500).json({
                 msg: 'ERROR Login',
+                err: error
+            })
+          })
+    },
+    updatelanguage: function (req,res) {
+        let updatelanguage = req.body.language.toUpperCase()
+        User.findOneAndUpdate({
+            _id: req.decoded.userid
+        }, {
+            language: updatelanguage
+        })
+          .then(user => {
+            res.status(201).json({
+                msg: 'Update language success',
+                lang: user.language
+            }) 
+          })
+          .catch(error => {
+            res.status(500).json({
+                msg: 'ERROR Update Language User',
                 err: error
             })
           })

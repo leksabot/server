@@ -24,6 +24,8 @@ module.exports = {
                     res.status(201).json({
                         msg: 'Registration success',
                         token: token,
+                        name: user.name,
+                        email: user.email,
                         lang: nativeLang
                     })
                 } else {
@@ -60,6 +62,8 @@ module.exports = {
                         res.status(201).json({
                             msg: 'Login success',
                             token: token,
+                            name: user.name,
+                            email: user.email,
                             lang: nativeLang
                         })
                     } else {

@@ -126,6 +126,6 @@ module.exports = {
     },
 
     definefrench (req,res) {
-        frenchSearch(res, req.body.word)
+        frenchSearch(res, req.body.keyword)
     }
 }

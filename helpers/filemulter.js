@@ -1,5 +1,6 @@
 'use strict'
 require('dotenv').config()
+/* istanbul ignore file */
 
 const Multer = require('multer'),
       multer = Multer({

@@ -8,39 +8,39 @@ const expect = chai.expect
 
 describe('Google Vision Upload Test', ()=> {
 
-    let boundary = Math.random()
+    // let boundary = Math.random()
     // let filename = fs.readFileSync('~/Hacktiv8/finalproject/quotetest.jpg')
    
-    it('should give success message for NoGCP cases', (done)=> {
-        let file = {
-            fileName: "quotetest.jpg",
-        }
-        chai.request(app)
-            .post('/detectobject')
-            .set('Content-Type', 'multipart/form-data')
-            .field('Content-Type', 'multipart/form-data')
-            .field('imagefile', 'quotetest.jpg')
-            .attach('files', "/home/esadeli/Hacktiv8/finalproject/quotetest.jpg")
-            .field('motherlanguage', 'id')
-            // .send({
-            //     file,
-            //     motherlanguage: 'id'
-            // })
-            // .write('--' + boundary + '\r\n')
-            // .write('Content-Disposition: form-data; name="imagefile"; filename="'+'quotetest.jpg'+'"\r\n')
-            // .write('Content-Type: image/jpg\r\n')
-            // .write('\r\n')
-            // .write(fs.readFileSync('/home/esadeli/Hacktiv8/finalproject/quotetest.jpg'))
-            // .write('\r\n--' + boundary + '--')
-            .end((err,res)=>{
+    // it('should give success message for NoGCP cases', (done)=> {
+    //     let file = {
+    //         fileName: "quotetest.jpg",
+    //     }
+    //     chai.request(app)
+    //         .post('/detectobject')
+    //         .set('Content-Type', 'multipart/form-data')
+    //         .field('Content-Type', 'multipart/form-data')
+    //         .field('imagefile', 'quotetest.jpg')
+    //         .attach('files', "/home/esadeli/Hacktiv8/finalproject/quotetest.jpg")
+    //         .field('motherlanguage', 'id')
+    //         // .send({
+    //         //     file,
+    //         //     motherlanguage: 'id'
+    //         // })
+    //         // .write('--' + boundary + '\r\n')
+    //         // .write('Content-Disposition: form-data; name="imagefile"; filename="'+'quotetest.jpg'+'"\r\n')
+    //         // .write('Content-Type: image/jpg\r\n')
+    //         // .write('\r\n')
+    //         // .write(fs.readFileSync('/home/esadeli/Hacktiv8/finalproject/quotetest.jpg'))
+    //         // .write('\r\n--' + boundary + '--')
+    //         .end((err,res)=>{
                 
-                expect(res).to.have.status(200)
-                //console.log('error------------------', err)
-                //console.log('res.body---------------',res.body)
-                done()
-            })
+    //             expect(res).to.have.status(200)
+    //             //console.log('error------------------', err)
+    //             //console.log('res.body---------------',res.body)
+    //             done()
+    //         })
 
-        })
+    //     })
         
     // Negative test
 

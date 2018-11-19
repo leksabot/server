@@ -24,7 +24,8 @@ const UserSchema = new Schema({
 		minlength: [6, 'Password should have minimum 6 characters']
 	},
 	language: {
-		type: String
+		type: String,
+		maxlength: [2, 'Language code should have maximum 2 characters']
 	}
 },{
 	timestamps: true

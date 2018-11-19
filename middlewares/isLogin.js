@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 function isLogin(req,res,next) {
     jwt.verify(req.headers.token,process.env.SECRET_TOKEN,(err,decoded) => {
         if(decoded){
-
+            req.decoded = decoded
             User.findOne({
                 name: decoded.name,
                 email: decoded.email

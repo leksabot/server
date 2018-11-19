@@ -15,6 +15,7 @@ module.exports = {
          .then(user => {
             let nativeLang = user.language
             jwt.sign({
+                userid: user._id,
                 name: user.name,
                 email: user.email,
                 language: user.language
@@ -50,6 +51,7 @@ module.exports = {
             if(user) {
                 let nativeLang = user.language
                 jwt.sign({
+                    userid: user._id,
                     name: user.name,
                     email: user.email,
                     language: user.language
@@ -79,5 +81,45 @@ module.exports = {
                 err: error
             })
           })
+    },
+    updatelanguage: function (req,res) {
+        let updatelanguage = req.body.language.toUpperCase()
+        
+        // check if update language input is not valid
+        if(updatelanguage.length === 2) {
+            User.findOneAndUpdate({
+                _id: req.decoded.userid
+            }, {
+                language: updatelanguage
+            })
+              .then(user => {
+                // get the latest information of user
+                User.findOne({
+                    _id: req.decoded.userid
+                })
+                  .then(user=> {
+                    res.status(201).json({
+                        msg: 'Update language success',
+                        lang: user.language
+                    }) 
+                  })
+                  .catch(error=> {
+                    res.status(500).json({
+                        msg: 'ERROR find user after Update Language',
+                        err: error
+                    })    
+                  })
+              })
+              .catch(error => {
+                res.status(500).json({
+                    msg: 'ERROR Update Language User',
+                    err: error
+                })
+              })
+        } else {
+            res.status(500).json({
+                err: 'Language code should have maximum 2 characters'
+            })
+        }
     }
 }

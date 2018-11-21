@@ -7,8 +7,10 @@ const cors = require('cors');
 
 const mongoose = require('mongoose')
 
+/* istanbul ignore next */
 if(process.env.NODE_ENV !== 'test'){
     // mongoose.connect('mongodb://localhost:27017/leksabotdb', {useNewUrlParser: true})
+    /* istanbul ignore next */
     mongoose.connect(process.env.MONGO_USER,{useNewUrlParser: true})
 } else {
     mongoose.connect('mongodb://localhost:27017/leksabotdbtesting', {useNewUrlParser: true})
@@ -33,7 +35,7 @@ app.use('/translate', getTranslate);
 app.get('/', (req,res) => {
     res.send('OK')
 })
-
+/* istanbul ignore next */
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening to port `, process.env.PORT || 3000)
 })

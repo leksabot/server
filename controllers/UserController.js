@@ -29,6 +29,7 @@ module.exports = {
                         lang: nativeLang
                     })
                 } else {
+                    /* istanbul ignore next */
                     res.status(500).json({
                         msg: 'ERROR GET TOKEN - Registration',
                         err: err
@@ -66,7 +67,9 @@ module.exports = {
                             email: user.email,
                             lang: nativeLang
                         })
-                    } else {
+                    } 
+                    /* istanbul ignore next */
+                    else {
                         res.status(500).json({
                             msg: 'ERROR GET TOKEN - Login',
                             err: err

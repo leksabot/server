@@ -38,8 +38,10 @@ module.exports = {
                     .catch(err => {
                         res.status(500).json({message: `invalid input parameter translate at Yandex En`})
                     })
-                }else if(translation.detectedSourceLanguage =='fr'){
-                    //console.log('franceeeee')
+                }
+                /* istanbul ignore next */
+                else if(translation.detectedSourceLanguage =='fr'){
+                    /* istanbul ignore next */
                     axios.get(`https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${apiYandex}&lang=fr-en&text=${req.body.text}`)            
                     .then(dataFrToEn => {
                         res.status(200).json({ 
@@ -49,6 +51,7 @@ module.exports = {
                             translate2:{}
                         })                                        
                     })
+                    /* istanbul ignore next */
                     .catch(err => {
                         res.status(500).json({message: `invalid input parameter translate at Yandex En`})
                     })
